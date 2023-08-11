@@ -20,7 +20,7 @@ export const Main = () => {
             alt="backgroundCover"
           />
           <div className="absolute w-full h-full bg-black inset-0 bg-opacity-60 z-10" />
-          <div className="absolute inset-0 z-20 flex  justify-center items-center gap-80">
+          <div className="absolute inset-0 z-20 flex  justify-center items-center lg:gap-[500px] 2xl:gap-[700px]">
             <div className="flex flex-col w-[30%] gap-4">
               <div className="w-20 h-20 relative flex items-center justify-center">
                 <Image
