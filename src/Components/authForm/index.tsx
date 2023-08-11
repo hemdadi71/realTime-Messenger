@@ -104,6 +104,9 @@ const AuthForm = () => {
   }, [])
   return (
     <>
+      <div className="flex justify-center text-gray-100 text-2xl font-bold border-b border-gray-200 pb-3">
+        <p>{variant === 'LOGIN' ? 'Login' : 'Join now'}</p>
+      </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="p-3 flex flex-col gap-1 overflow-auto">
