@@ -1,4 +1,3 @@
-
 import { NextApiRequest, NextApiResponse } from 'next'
 import jwt from 'jsonwebtoken'
 
@@ -48,6 +47,8 @@ export default async function handler(
           id: user._id,
           email: user.email,
           avatar: user.avatar,
+          accessToken,
+          refreshToken,
         },
         tokens: {
           accessToken,
@@ -55,7 +56,9 @@ export default async function handler(
         },
       })
     } catch (error) {
-      res.status(400).json({ success: false, error: 'fkldsfj' })
+      res
+        .status(400)
+        .json({ success: false, error: 'error with status code 400' })
     }
   } else {
     res.status(400).json({ success: false })

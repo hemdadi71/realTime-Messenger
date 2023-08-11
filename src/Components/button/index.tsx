@@ -11,6 +11,7 @@ interface ButtonProps {
   danger?: boolean
   disabled?: boolean
   isLoading: boolean
+  className?: string
 }
 const Button: React.FC<ButtonProps> = ({
   type,
@@ -21,6 +22,7 @@ const Button: React.FC<ButtonProps> = ({
   danger,
   disabled,
   isLoading,
+  className,
 }) => {
   return (
     <>
@@ -39,13 +41,14 @@ const Button: React.FC<ButtonProps> = ({
             'bg-rose-500 hover:bg-rose-600 focus-visible:outline-rose-600',
           !secondary &&
             !danger &&
-            'bg-sky-500 hover:bg-sky-600 focus-visible:outline-sky-600'
+            'bg-sky-500 hover:bg-sky-600 focus-visible:outline-sky-600',
+          className
         )}>
         {children}
         {isLoading && (
-        <div>
-          <Spinner className='w-4 h-4 ml-2' />
-        </div>
+          <div>
+            <Spinner className="w-4 h-4 ml-2" />
+          </div>
         )}
       </button>
     </>
