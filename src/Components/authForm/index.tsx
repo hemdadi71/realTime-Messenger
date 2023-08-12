@@ -66,8 +66,7 @@ const AuthForm = () => {
         .then(res => {
           toast.success('success signup')
           setIsLoading(false)
-          Cookies.set('token', JSON.stringify(res.data))
-          router.push('/conversations')
+          router.push('/contacts')
         })
         .catch(() => {
           toast.error('Somthing went wrong!!!')
@@ -81,9 +80,12 @@ const AuthForm = () => {
         .then(res => {
           toast.success('wellcome 👋')
           setIsLoading(false)
-          isChecked && Cookies.set('token', JSON.stringify(res.data))
+          isChecked &&
+            Cookies.set('token', JSON.stringify(res.data), {
+              expires: 7,
+            })
           localStorage.setItem('isLogin', JSON.stringify({ isLogin: true }))
-          router.push('/conversations')
+          router.push('/contacts')
         })
         .catch(() => {
           toast.error('Somthing went wrong!!!')

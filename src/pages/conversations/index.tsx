@@ -3,6 +3,7 @@ import { getToken } from '@/actions/getToken'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import ConversationList from './components/ConversationList'
 const Conversations = () => {
   const [isClient, setIsClient] = useState(false)
 
@@ -21,19 +22,11 @@ const Conversations = () => {
     }
   }, [isLogin])
 
-  const handleLogOut = () => {
-    Cookies.remove('token')
-    localStorage.removeItem('isLogin')
-    router.push('/')
-  }
   if (isClient) {
     if ((pathname.includes('/conversations') && isLogin) || isToken) {
       return (
         <>
-          <div>conversations</div>
-          <button onClick={handleLogOut} className="bg-red-500">
-            Log Out
-          </button>
+          <ConversationList />
         </>
       )
     } else {
