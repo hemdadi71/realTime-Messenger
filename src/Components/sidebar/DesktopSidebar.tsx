@@ -1,4 +1,3 @@
-import { handleLogOut } from '@/utils/Logout'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { Fragment, useState } from 'react'
@@ -9,6 +8,7 @@ import Avatar from '../avatar/Avatar'
 import { getCurrentUser } from '@/actions/getCurrentUser'
 import Modal from '../Modal'
 import ProfileSetting from '../profileSetting'
+import Cookies from 'js-cookie'
 const DesktopSidebar = () => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [isOpenModal, setIsOpenModal] = useState(false)
@@ -16,6 +16,11 @@ const DesktopSidebar = () => {
   const { pathname } = router
   const currentUser = getCurrentUser()
   const className = `w-10 h-10 rounded-md transition-all ease-in-out duration-300 flex items-center outline-none justify-center hover:text-blue-500`
+  const handleLogOut = () => {
+    Cookies.remove('token')
+    localStorage.removeItem('isLogin')
+    router.push('/')
+  }
   return (
     <>
       <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
@@ -46,7 +51,7 @@ const DesktopSidebar = () => {
             <Tab as={Fragment}>
               <Link
                 href="/"
-                onClick={() => handleLogOut(router)}
+                onClick={handleLogOut}
                 className={`${className} ${
                   selectedIndex === 2 && 'bg-neutral-100 outline-none'
                 }`}>
