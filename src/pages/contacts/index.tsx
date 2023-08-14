@@ -1,10 +1,14 @@
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from './components/Layout'
 import Link from 'next/link'
 import Modal from '@/Components/Modal'
 import { AiOutlineUserAdd } from 'react-icons/ai'
 import AddContact from '@/Components/addContact'
+import { getUsers } from '@/actions/getUsers'
+import { useQuery } from 'react-query'
+import { getCurrentUser } from '@/actions/getCurrentUser'
+import ContactBox from '@/Components/contactBox'
 const contacts = [
   {
     name: 'hosein',
@@ -24,14 +28,21 @@ const Contacts = () => {
   const router = useRouter()
   const { pathname } = router
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [currentUser, setCurrentUser] = useState<any>({})
+  useEffect(() => {
+    const user = getCurrentUser()
+    if (user) {
+      setCurrentUser(user)
+    } else {
+      const localUserData = localStorage.getItem('token')
+      const user = localUserData ? JSON.parse(localUserData) : null
+      setCurrentUser(user)
+    }
+  }, [])
+  console.log(currentUser)
   return (
     <>
-      <div
-        className={`flex flex-col gap-2 w-full ${
-          pathname === '/conversation' || pathname === '/contacts'
-            ? 'w-full'
-            : 'w-[22%]'
-        }`}>
+      <div className="flex flex-col gap-2 w-full">
         <div className="flex items-center justify-between py-2 px-3">
           <h1 className="text-lg font-bold">Contacts</h1>
           <div onClick={() => setIsModalOpen(true)}>
@@ -41,16 +52,15 @@ const Contacts = () => {
             />
           </div>
         </div>
-        <div className="flex flex-col border p-5 w-full">
-          {contacts.map(item => (
-            <Link key={item.id} href={`/conversations/${item.id}`}>
-              {item.name}
-            </Link>
-          ))}
+        <div className="flex flex-col gap-3 px-2 w-full overflow-auto">
+          {Object.keys(currentUser).length &&
+            currentUser?.contacts.map((item: any) => (
+              <ContactBox key={item.id} user={item} />
+            ))}
         </div>
       </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <AddContact />
+        <AddContact setIsModalOpen={setIsModalOpen} />
       </Modal>
     </>
   )

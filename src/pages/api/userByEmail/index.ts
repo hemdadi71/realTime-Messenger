@@ -14,9 +14,9 @@ export default async function handler(
 
   if (method === 'POST') {
     try {
-      const { email, password } = body
+      const { email } = body
       // Check if required properties exist
-      if (!email || !password) {
+      if (!email) {
         res
           .status(400)
           .json({ success: false, message: 'Missing required properties' })
@@ -29,32 +29,14 @@ export default async function handler(
         res.status(401).json({ success: false, message: 'Invalid credentials' })
         return
       }
-
-      const isPasswordValid = (await user.password) === password
-      if (!isPasswordValid) {
-        res.status(401).json({ success: false, message: 'Invalid credentials' })
-        return
-      }
-
-      const accessTokenSecret = crypto.randomBytes(64).toString('hex')
-      const refreshTokenSecret = crypto.randomBytes(64).toString('hex')
-      // Generate tokens
-      const accessToken = jwt.sign({ userId: user._id }, accessTokenSecret)
-      const refreshToken = jwt.sign({ userId: user._id }, refreshTokenSecret)
       res.status(200).json({
         success: true,
         user: {
           id: user._id,
           email: user.email,
-          name: user.name,
           avatar: user.avatar,
-          contact: user.contact,
-          accessToken,
-          refreshToken,
-        },
-        tokens: {
-          accessToken,
-          refreshToken,
+          fullName: user.fullName,
+          contacts: user.contacts,
         },
       })
     } catch (error) {

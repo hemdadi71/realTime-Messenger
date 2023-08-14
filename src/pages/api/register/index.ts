@@ -12,10 +12,10 @@ export default async function handler(
   switch (method) {
     case 'POST': // Sign up
       try {
-        const { name, email, password } = req.body
+        const { fullName, email, password } = req.body
 
         // Check if required properties exist
-        if (!name || !email || !password) {
+        if (!fullName || !email || !password) {
           res
             .status(400)
             .json({ success: false, message: 'Missing required properties' })
@@ -33,9 +33,10 @@ export default async function handler(
         }
 
         const user = await UserModel.create({
-          name,
+          fullName,
           email,
           password,
+          contacts: [],
         })
         res.status(201).json({ success: true, user })
       } catch (error) {

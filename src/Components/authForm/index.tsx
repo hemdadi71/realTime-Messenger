@@ -12,6 +12,7 @@ import Cookies from 'js-cookie'
 import { getCurrentUser } from '@/actions/getCurrentUser'
 import CheckBox from '../input/CheckBox'
 import CheckBoxInput from '../input/CheckBox'
+import { getUsersByEmail } from '@/actions/getUsersByEmail'
 type variant = 'LOGIN' | 'REGISTER'
 
 const AuthForm = () => {
@@ -33,7 +34,7 @@ const AuthForm = () => {
       .matches(/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/, 'password not valid'),
 
     ...(variant === 'REGISTER' && {
-      name: yup.string().required(),
+      fullName: yup.string().required(),
       confirmPassword: yup
         .string()
         .required()
@@ -67,6 +68,10 @@ const AuthForm = () => {
           toast.success('success signup')
           setIsLoading(false)
           router.push('/contacts')
+          getUsersByEmail({ email: res.data.user.email }).then(res => {
+            const newData = res?.data.user
+            localStorage.setItem('token', JSON.stringify(newData))
+          })
         })
         .catch(() => {
           toast.error('Somthing went wrong!!!')
@@ -80,12 +85,16 @@ const AuthForm = () => {
         .then(res => {
           toast.success('wellcome 👋')
           setIsLoading(false)
-          isChecked &&
-            Cookies.set('token', JSON.stringify(res.data), {
-              expires: 7,
-            })
-          localStorage.setItem('isLogin', JSON.stringify({ isLogin: true }))
-          router.push('/contacts')
+          getUsersByEmail({ email: res.data.user.email }).then(res => {
+            const newData = res?.data.user
+            isChecked &&
+              Cookies.set('token', JSON.stringify(newData), {
+                expires: 7,
+              })
+            localStorage.setItem('token', JSON.stringify(newData))
+            localStorage.setItem('isLogin', JSON.stringify({ isLogin: true }))
+            router.push('/contacts')
+          })
         })
         .catch(() => {
           toast.error('Somthing went wrong!!!')
@@ -114,10 +123,10 @@ const AuthForm = () => {
         className="p-3 flex flex-col gap-1 overflow-auto">
         {variant === 'REGISTER' && (
           <Input
-            id="name"
-            label="Name"
-            register={{ ...register('name') }}
-            errors={errors.name?.message}
+            id="fullName"
+            label="Full name"
+            register={{ ...register('fullName') }}
+            errors={errors.fullName?.message}
             disabled={isLoading}
           />
         )}

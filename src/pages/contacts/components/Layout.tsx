@@ -7,7 +7,7 @@ const ContactsLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <div className="flex w-screen h-screen overflow-hidden">
         <Contacts />
-        <div className="w-[77%]">
+        <div className="w-[360%]">
           <header className="bg-purple-400  overflow-hidden">Header</header>
           {children}
         </div>

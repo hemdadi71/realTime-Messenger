@@ -97,7 +97,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
                     <IoClose className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
-                {children}
+                <div> {children}</div>
               </Dialog.Panel>
             </Transition.Child>
           </div>

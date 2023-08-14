@@ -1,10 +1,14 @@
-
-
 import { User } from '@prisma/client'
 import Image from 'next/image'
 
 interface AvatarProps {
-  user?: User
+  user?: {
+    id: string
+    fullName: string
+    avatar?: string
+    email: string
+    contacts?: any
+  }
 }
 
 const Avatar: React.FC<AvatarProps> = ({ user }) => {
@@ -15,7 +19,7 @@ const Avatar: React.FC<AvatarProps> = ({ user }) => {
           <Image
             alt="avatar"
             className="object-cover"
-            src={user?.image || '/images/placeholder.jpg'}
+            src={user?.avatar || '/images/placeholder.jpg'}
             fill></Image>
         </div>
         <span className="absolute block rounded-full bg-green-500 ring-2 ring-white top-0 right-0 h-2 w-2 md:h-3  md:w-3" />
